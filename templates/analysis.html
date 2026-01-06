@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analysis Report</title>
+    <style>
+        body { background-color: #0d1117; color: #c9d1d9; font-family: monospace; padding: 20px; }
+        
+        /* The Report Container */
+        .report-box {
+            background-color: #000;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 15px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #3fb950; /* Hacker Green */
+            font-size: 0.9rem;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        /* Header Area */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 10px;
+        }
+
+        /* Buttons */
+        .btn {
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+        }
+        .btn-back { background: #21262d; color: #c9d1d9; border: 1px solid #30363d; }
+        .btn-back:hover { background: #30363d; }
+        
+        .btn-copy { background: #238636; color: white; }
+        .btn-copy:hover { background: #2ea043; }
+        .btn-copy:active { transform: translateY(1px); }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div>
+            <a href="/" class="btn btn-back">← DASHBOARD</a>
+            <h1 style="display:inline; margin-left:15px; font-size:1.2rem;">RUNNING: {{ title }} ANALYSIS</h1>
+        </div>
+        <button class="btn btn-copy" onclick="copyReport()">📋 COPY REPORT</button>
+    </div>
+
+    <pre id="report-content" class="report-box">{{ output }}</pre>
+
+    <script>
+        function copyReport() {
+            const text = document.getElementById('report-content').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('.btn-copy');
+                const originalText = btn.innerText;
+                
+                // Visual feedback
+                btn.innerText = "✅ COPIED!";
+                btn.style.backgroundColor = "#1f6feb"; // Blue flash
+                
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.backgroundColor = "#238636"; // Green back
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy: ', err);
+            });
+        }
+    </script>
+</body>
+</html>

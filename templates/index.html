@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TradeCommand 2026 | Master Dashboard</title>
+    <style>
+        :root { 
+            --bg: #0d1117; 
+            --card: #161b22; 
+            --border: #30363d; 
+            --text: #c9d1d9; 
+            --accent: #58a6ff; 
+            --green: #3fb950; 
+            --red: #f85149; 
+            --orange: #d29922; 
+            --purple: #8957e5;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Courier New', monospace; background-color: var(--bg); color: var(--text); padding: 20px; line-height: 1.4; margin: 0; }
+        
+        /* 3-Column Top Layout */
+        .top-grid { display: flex; gap: 15px; margin-bottom: 25px; align-items: stretch; }
+        .top-column { flex: 1; display: flex; flex-direction: column; }
+
+        .section-header { 
+            color: var(--accent); border-bottom: 2px solid var(--border); 
+            padding-bottom: 5px; margin-bottom: 15px; margin-top: 30px; 
+            font-size: 1.3em; letter-spacing: 1px; text-transform: uppercase; 
+            display: flex; align-items: center; 
+            justify-content: flex-start;
+            gap: 15px;
+        }
+
+        .card { background-color: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 15px; margin-bottom: 15px; overflow-x: auto; flex-grow: 1; }
+        h3 { font-size: 0.8em; color: #8b949e; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Header Row for Tables (Title + Button) */
+        .table-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed #30363d;
+        }
+
+        /* AI Command Center Box */
+        #ai-terminal { background: #1c132d; border: 1px solid var(--purple); position: relative; }
+        #ai-payload { 
+            width: 100%; height: 120px; background: #000; color: var(--green); 
+            font-family: 'Consolas', monospace; border: 1px solid var(--purple); 
+            padding: 8px; margin: 10px 0; resize: none; font-size: 0.85em;
+        }
+        
+        /* Help Box */
+        #help-box { display: none; background: #000; border: 1px solid var(--purple); padding: 10px; font-size: 0.7em; color: #bc8cff; margin-bottom: 10px; max-height: 200px; overflow-y: auto; }
+        .help-cmd { color: var(--green); font-weight: bold; margin-top: 5px; }
+        .help-syntax { color: var(--text); display: block; margin-bottom: 5px; border-left: 2px solid #333; padding-left: 8px; font-family: 'Consolas', monospace; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; font-size: 0.78em; min-width: 1000px; }
+        th, td { text-align: right; padding: 6px; border-bottom: 1px solid #21262d; white-space: nowrap; }
+        th:first-child, td:first-child { text-align: left; position: sticky; left: 0; background: var(--card); }
+        th { color: #8b949e; text-transform: uppercase; }
+        tfoot { font-weight: bold; background: #0d1117; }
+        
+        /* Sector Headers */
+        .sector-header { background: #1f2937; color: var(--accent); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9em; text-align: left; padding: 8px 10px; }
+        .sector-total { color: #8b949e; font-size: 0.8em; margin-left: 10px; }
+        
+        .config-input { background: #0d1117; border: 1px solid var(--border); color: white; padding: 4px; width: 60px; text-align: center; border-radius: 3px; font-size: 0.85em; }
+        .legend { font-size: 0.65em; color: #8b949e; margin-top: 5px; display: block; line-height: 1.2; }
+        
+        .btn { border: none; padding: 4px 8px; cursor: pointer; border-radius: 3px; font-weight:bold; font-size: 0.75em; }
+        .btn-blue { background: #1f6feb; color: white; }
+        .btn-purple { background: var(--purple); color: white; }
+        .btn-red { background: #f85149; color: white; }
+        .btn-tiny { padding: 2px 6px; font-size: 0.65em; background: #30363d; color: #8b949e; border: 1px solid #30363d; }
+        .btn-tiny:hover { color: white; border-color: #8b949e; }
+
+        .status-badge { padding: 3px 6px; border-radius: 3px; font-weight: bold; font-size: 0.6em; }
+        .open { background: var(--green); color: #000; }
+        .closed { background: var(--red); color: #fff; }
+        .heartbeat { display: inline-block; width: 8px; height: 8px; background-color: grey; border-radius: 50%; }
+        
+        .scroll-box { height: 210px; overflow-y: auto; background: #000; border: 1px solid var(--border); padding: 8px; font-size: 0.75em; border-radius: 4px; }
+        .log-item { margin-bottom: 4px; border-bottom: 1px solid #161b22; padding-bottom: 2px; }
+        .timestamp { color: #58a6ff; font-weight: bold; margin-right: 5px; }
+        .up { color: var(--green); } .down { color: var(--red); }
+
+        /* Utility for hiding */
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="top-grid">
+        <div class="top-column">
+            <div id="ai-terminal" class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3>AI COMMAND CENTER</h3>
+                    <div>
+                        <button class="btn btn-purple" onclick="toggleHelp()">HELP</button>
+                        <button class="btn btn-purple" onclick="copyPortfolioState()">COPY SNAPSHOT</button> <button class="btn btn-purple" onclick="copyStrategyLog()">COPY LOG</button>
+                    </div>
+                </div>
+                
+                <div id="help-box">
+                    <div class="help-cmd">ADD SYMBOLS</div>
+                    <code class="help-syntax">{"add_stocks": ["INTC", "VLO"], "add_crypto": ["BTC-USD"]}</code>
+                    <div class="help-cmd">REMOVE SYMBOLS</div>
+                    <code class="help-syntax">{"remove_stocks": ["TSLA"], "remove_crypto": ["DOGE-USD"]}</code>
+                    <div class="help-cmd">UPDATE STRATEGY</div>
+                    <code class="help-syntax">{"stock_strategy": {"risk_per_trade": 50}}</code>
+                    <div class="help-cmd">FULL RESET</div>
+                    <code class="help-syntax">{"reset_balance": 10000, "reset_logs": true}</code>
+                    <div class="help-cmd">LIQUIDATE (KEEP WATCHING)</div>
+                    <code class="help-syntax">{"sell_now": ["DOGE-USD"]}</code>
+                </div>
+
+                <textarea id="ai-payload" placeholder='Enter JSON command...' 
+                          data-gramm="false" wt-ignore-input="true" data-enable-grammarly="false"></textarea>
+                
+                <button class="btn btn-purple" style="width: 100%;" onclick="executeAICommand()">EXECUTE COMMAND</button>
+            </div>
+        </div>
+        <div class="top-column">
+            <div class="card">
+                <h3>NEWS ALERT (VOLATILITY ONLY)</h3>
+                <div class="scroll-box" id="news-feed"></div>
+            </div>
+        </div>
+        <div class="top-column">
+            <div class="card">
+                <h3>TRANSACTION LOG</h3>
+                <div class="scroll-box" id="history-log"></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; padding: 0 10px;">
+        <span id="last-updated" style="font-size:0.7em; color:#8b949e;">INIT SYNC...</span>
+        <div style="text-align: right;">
+            <span style="font-size: 0.7em; color: #8b949e; margin-right: 15px;">AVAILABLE CASH: <span id="total-cash" style="color:white;">$0.00</span></span>
+            <span style="font-size: 0.7em; color: #8b949e;">NET WORTH:</span>
+            <span id="net-worth" style="font-size: 1.5em; color: var(--green); font-weight: bold;">$0.00</span>
+        </div>
+    </div>
+
+    <div class="section-header">
+        STOCK BOT 
+        <span id="market-status" class="status-badge closed">OFFLINE</span>
+    </div>
+    
+    <div class="card">
+        <div style="display: flex; gap: 30px; align-items: flex-start; margin-bottom: 10px;">
+            <div>
+                Risk <input type="number" id="stock-risk" class="config-input" data-gramm="false" wt-ignore-input="true">
+                Stop <input type="number" id="stock-stop" step="0.1" class="config-input" data-gramm="false" wt-ignore-input="true">
+                SMA <input type="number" id="stock-sma" class="config-input" data-gramm="false" wt-ignore-input="true">
+                <button class="btn btn-blue" onclick="saveConfig()">SAVE</button>
+            </div>
+            <div class="legend">
+                <b>RISK:</b> Max $ loss per trade. | <b>STOP:</b> Multiplier for exit safety. | <b>SMA:</b> 50+ identifies long trend.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>HOLDINGS (BY SECTOR)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Symbol</th><th>Qty</th><th>Entry</th><th>Stop</th><th>Target</th>
+                    <th>Price</th><th>Value</th><th>P/L</th><th>1D%</th><th>RSI</th><th>Trend</th><th>Status</th><th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="stock-table"></tbody>
+            <tfoot>
+                <tr><td colspan="6">AVAILABLE CASH:</td><td id="stock-cash-footer" style="color: white;">$0.00</td><td colspan="6"></td></tr>
+            </tfoot>
+        </table>
+
+        <div class="table-header-row">
+            <h3>WATCHLIST SCANNER</h3>
+            <button class="btn btn-tiny" id="btn-stock-watch" onclick="toggleWatchlist('stock')">HIDE</button>
+        </div>
+        <div id="stock-watchlist-wrapper">
+            <table>
+                <thead>
+                    <tr><th>Ticker</th><th>Price</th><th>1D %</th><th>RSI</th><th>Trend</th><th>Status</th><th>Sector</th></tr>
+                </thead>
+                <tbody id="stock-watchlist-table"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section-header">
+        CRYPTO BOT 
+        <div id="connection-dot" class="heartbeat"></div>
+    </div>
+
+    <div class="card">
+        <div style="display: flex; gap: 30px; align-items: flex-start; margin-bottom: 10px;">
+            <div>
+                Risk <input type="number" id="crypto-risk" class="config-input" data-gramm="false" wt-ignore-input="true">
+                Stop <input type="number" id="crypto-stop" step="0.1" class="config-input" data-gramm="false" wt-ignore-input="true">
+                SMA <input type="number" id="crypto-sma" class="config-input" data-gramm="false" wt-ignore-input="true">
+                <button class="btn btn-blue" onclick="saveConfig()">SAVE</button>
+            </div>
+            <div class="legend">
+                <b>RISK:</b> Target $ for coin buy. | <b>STOP:</b> 3.0+ for crypto volatility. | <b>SMA:</b> 20+ for momentum shifts.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>HOLDINGS</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Symbol</th><th>Qty</th><th>Entry</th><th>Stop</th><th>Target</th>
+                    <th>Price</th><th>Value</th><th>P/L</th><th>1D%</th><th>RSI</th><th>Trend</th><th>Status</th><th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="crypto-table"></tbody>
+            <tfoot>
+                <tr><td colspan="6">AVAILABLE CASH:</td><td id="crypto-cash-footer" style="color: white;">$0.00</td><td colspan="6"></td></tr>
+            </tfoot>
+        </table>
+
+        <div class="table-header-row">
+            <h3>WATCHLIST SCANNER</h3>
+            <button class="btn btn-tiny" id="btn-crypto-watch" onclick="toggleWatchlist('crypto')">HIDE</button>
+        </div>
+        <div id="crypto-watchlist-wrapper">
+            <table>
+                <thead>
+                    <tr><th>Ticker</th><th>Price</th><th>24H %</th><th>RSI</th><th>Trend</th><th>Status</th></tr>
+                </thead>
+                <tbody id="crypto-watchlist-table"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let currentConfig = {};
+
+        function toggleHelp() {
+            const box = document.getElementById('help-box');
+            box.style.display = box.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleWatchlist(type) {
+            const wrapper = document.getElementById(`${type}-watchlist-wrapper`);
+            const btn = document.getElementById(`btn-${type}-watch`);
+            if (wrapper.style.display === 'none') {
+                wrapper.style.display = 'block';
+                btn.innerText = 'HIDE';
+            } else {
+                wrapper.style.display = 'none';
+                btn.innerText = 'SHOW';
+            }
+        }
+
+        // NEW: FULL SNAPSHOT COPY FUNCTION
+        function copyPortfolioState() {
+            fetch('/api/data?nocache=' + Date.now())
+            .then(res => res.json())
+            .then(data => {
+                let report = "=== SYSTEM SNAPSHOT ===\n\n";
+                
+                // 1. CONFIG
+                report += "--- [CONFIGURATION] ---\n";
+                report += "STOCK STRATEGY: " + JSON.stringify(data.config.stock_strategy) + "\n";
+                report += "CRYPTO STRATEGY: " + JSON.stringify(data.config.crypto_strategy) + "\n";
+                report += "NEWS KEYWORDS: " + JSON.stringify(data.config.news_keywords) + "\n\n";
+
+                // 2. POSITIONS
+                report += "--- [CURRENT HOLDINGS] ---\n";
+                report += "TYPE,SYMBOL,SHARES,ENTRY,CURRENT,P/L,STOP,TARGET\n";
+                for (const [sym, pos] of Object.entries(data.stock.positions)) {
+                    let pl = (pos.shares * (pos.current_price||pos.entry)) - (pos.shares * pos.entry);
+                    report += `STOCK,${sym},${pos.shares.toFixed(2)},${pos.entry.toFixed(2)},${(pos.current_price||0).toFixed(2)},${pl.toFixed(2)},${pos.stop.toFixed(2)},${pos.target.toFixed(2)}\n`;
+                }
+                for (const [sym, pos] of Object.entries(data.crypto.positions)) {
+                    let pl = (pos.shares * (pos.current_price||pos.entry)) - (pos.shares * pos.entry);
+                    report += `CRYPTO,${sym},${pos.shares.toFixed(2)},${pos.entry.toFixed(2)},${(pos.current_price||0).toFixed(2)},${pl.toFixed(2)},${pos.stop.toFixed(2)},${pos.target.toFixed(2)}\n`;
+                }
+                report += "\n";
+
+                // 3. WATCHLIST
+                report += "--- [WATCHLIST SCANNER] ---\n";
+                report += "TYPE,SYMBOL,PRICE,RSI,TREND,STATUS,SECTOR\n";
+                data.watchlist_data.stock.forEach(w => {
+                    report += `STOCK,${w.symbol},${w.price.toFixed(2)},${w.rsi.toFixed(0)},${w.trend},${w.status},${w.sector||'N/A'}\n`;
+                });
+                data.watchlist_data.crypto.forEach(w => {
+                    report += `CRYPTO,${w.symbol},${w.price.toFixed(2)},${w.rsi.toFixed(0)},${w.trend},${w.status},CRYPTO\n`;
+                });
+
+                navigator.clipboard.writeText(report);
+                alert("✅ SNAPSHOT COPIED!\n\nPaste this into the AI chat to get a perfect analysis of your current state.");
+            });
+        }
+
+        function renderPortfolio(type, data) {
+            let html = "";
+            const positions = data.positions || {};
+            const groups = {};
+            for (const [sym, pos] of Object.entries(positions)) {
+                let sec = pos.sector || (type === 'crypto' ? 'Crypto' : 'Uncategorized');
+                if (!groups[sec]) groups[sec] = [];
+                groups[sec].push({sym, ...pos});
+            }
+            for (const [sector, items] of Object.entries(groups)) {
+                let secTotal = items.reduce((sum, i) => sum + (i.shares * (i.current_price || i.entry)), 0);
+                html += `<tr><td colspan="13" class="sector-header">${sector}<span class="sector-total">($${secTotal.toLocaleString(undefined, {minimumFractionDigits:2})})</span></td></tr>`;
+                for (const pos of items) {
+                    let curr = pos.current_price || pos.entry;
+                    let val = pos.shares * curr;
+                    let profit = val - (pos.shares * pos.entry);
+                    let analysis = pos.analysis || {};
+                    let holdActive = pos.manual_hold === true;
+                    html += `<tr>
+                        <td style="font-weight:bold; padding-left: 20px;">${pos.sym}</td>
+                        <td>${pos.shares.toFixed(2)}</td><td>$${pos.entry.toFixed(2)}</td>
+                        <td style="color:var(--red)">$${pos.stop.toFixed(2)}</td>
+                        <td style="color:var(--accent)">$${pos.target.toFixed(2)}</td>
+                        <td>$${curr.toFixed(2)}</td><td>$${val.toFixed(2)}</td>
+                        <td class="${profit>=0?'up':'down'}">$${profit.toFixed(2)}</td>
+                        <td class="${(analysis.change||0)>=0?'up':'down'}">${analysis.change?analysis.change.toFixed(2)+'%':'-'}</td>
+                        <td>${analysis.rsi?analysis.rsi.toFixed(0):'-'}</td>
+                        <td>${analysis.trend||'-'}</td><td>${analysis.status||'-'}</td>
+                        <td>
+                            <button class="btn btn-purple ${holdActive?'':'active'}" style="font-size:0.6em;" onclick="toggleHold('${pos.sym}', '${type}')">${holdActive?'HOLD':'AUTO'}</button>
+                            <button class="btn btn-red" style="font-size:0.6em;" onclick="manualSell('${pos.sym}', '${type}', ${pos.shares})">SELL</button>
+                        </td>
+                    </tr>`;
+                }
+            }
+            if (Object.keys(positions).length === 0) {
+                 html = `<tr><td colspan="13" style="text-align:center; padding:20px; color:#8b949e;">No positions currently held.</td></tr>`;
+            }
+            document.getElementById(`${type}-table`).innerHTML = html;
+        }
+
+        function renderWatchlist(type, list) {
+            if (!list || list.length === 0) {
+                document.getElementById(`${type}-watchlist-table`).innerHTML = "<tr><td colspan='7' style='text-align:center;'>Waiting for market data...</td></tr>";
+                return;
+            }
+            let html = list.map(item => {
+                let cl = item.change >= 0 ? "up" : "down";
+                let sec = item.sector ? `<span style="font-size:0.8em; color:#8b949e;">${item.sector}</span>` : '';
+                let secCol = type === 'stock' ? `<td>${sec}</td>` : '';
+                return `<tr>
+                    <td style="font-weight:bold;">${item.symbol}</td>
+                    <td>$${item.price.toFixed(2)}</td>
+                    <td class="${cl}">${item.change >= 0 ? '+' : ''}${item.change.toFixed(2)}%</td>
+                    <td>${item.rsi.toFixed(0)}</td>
+                    <td>${item.trend}</td>
+                    <td style="color:var(--accent)">${item.status}</td>
+                    ${secCol}
+                </tr>`;
+            }).join('');
+            document.getElementById(`${type}-watchlist-table`).innerHTML = html;
+        }
+
+        function updateDashboard() {
+            fetch('/api/data?nocache=' + Date.now())
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('connection-dot').style.backgroundColor = "#3fb950";
+                    setTimeout(() => { document.getElementById('connection-dot').style.backgroundColor = "grey"; }, 400);
+                    
+                    document.getElementById('last-updated').innerText = "SYNC: " + (data.last_updated || "...");
+                    const mkt = document.getElementById('market-status');
+                    mkt.innerText = data.market_status;
+                    mkt.className = `status-badge ${data.market_status === 'MARKET OPEN' ? 'open' : 'closed'}`;
+                    
+                    const totalCash = (data.cash_stock || 0) + (data.cash_crypto || 0);
+                    document.getElementById('net-worth').innerText = '$' + data.net_worth.toLocaleString(undefined, {minimumFractionDigits:2});
+                    document.getElementById('total-cash').innerText = '$' + totalCash.toLocaleString(undefined, {minimumFractionDigits:2});
+                    document.getElementById('stock-cash-footer').innerText = '$' + (data.cash_stock || 0).toLocaleString(undefined, {minimumFractionDigits:2});
+                    document.getElementById('crypto-cash-footer').innerText = '$' + (data.cash_crypto || 0).toLocaleString(undefined, {minimumFractionDigits:2});
+
+                    renderPortfolio('stock', data.stock);
+                    renderPortfolio('crypto', data.crypto);
+                    renderWatchlist('stock', data.watchlist_data.stock);
+                    renderWatchlist('crypto', data.watchlist_data.crypto);
+                    
+                    document.getElementById('news-feed').innerHTML = data.news.map(n => `<div class="log-item"><span class="timestamp">${n.time}</span> ${n.text}</div>`).join('');
+                    
+                    const allHist = [...(data.stock.history || []), ...(data.crypto.history || [])].sort((a,b) => new Date(b.date) - new Date(a.date));
+                    document.getElementById('history-log').innerHTML = allHist.map(h => {
+                        let timeStr = new Date(h.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+                        return `<div class="log-item"><span class="timestamp">${timeStr}</span> <b>${h.symbol}</b> ${h.type} @ $${h.price.toFixed(2)}</div>`;
+                    }).join('');
+
+                    if(!currentConfig.stock_strategy) {
+                        document.getElementById('stock-risk').value = data.config.stock_strategy.risk_per_trade;
+                        document.getElementById('stock-stop').value = data.config.stock_strategy.stop_loss_mult;
+                        document.getElementById('stock-sma').value = data.config.stock_strategy.sma_period;
+                        document.getElementById('crypto-risk').value = data.config.crypto_strategy.risk_per_trade;
+                        document.getElementById('crypto-stop').value = data.config.crypto_strategy.stop_loss_mult;
+                        document.getElementById('crypto-sma').value = data.config.crypto_strategy.sma_period;
+                        currentConfig = data.config;
+                    }
+                });
+        }
+        
+        function executeAICommand() {
+                    const inputField = document.getElementById('ai-payload');
+                    const rawInput = inputField.value;
+                    
+                    try { JSON.parse(rawInput); } catch (e) { alert("⚠️ SYNTAX ERROR:\nYour command is not valid JSON.\n\nCheck for missing quotes, commas, or brackets."); return; }
+                    
+                    fetch('/api/ai_command', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: rawInput })
+                    .then(res => res.json())
+                    .then(d => { 
+                        if (d.status === "Error") {
+                            alert("❌ BOT ERROR:\n" + d.msg);
+                        } 
+                        else if (!d.actions || d.actions.length === 0) {
+                            alert("⚠️ COMMAND IGNORED\n\nThe bot received the command but made no changes.");
+                        } 
+                        else {
+                            alert("✅ SUCCESS:\n" + d.actions.join('\n')); 
+                            currentConfig = {}; 
+                            inputField.value = ""; // <--- THIS CLEARS THE BOX
+                        }
+                        updateDashboard(); 
+                    }).catch(err => alert("SERVER ERROR: " + err));
+                }        
+        function saveConfig() {
+            const config = {
+                stock_strategy: {
+                    risk_per_trade: parseFloat(document.getElementById('stock-risk').value),
+                    stop_loss_mult: parseFloat(document.getElementById('stock-stop').value),
+                    sma_period: parseInt(document.getElementById('stock-sma').value)
+                },
+                crypto_strategy: {
+                    risk_per_trade: parseFloat(document.getElementById('crypto-risk').value),
+                    stop_loss_mult: parseFloat(document.getElementById('crypto-stop').value),
+                    sma_period: parseInt(document.getElementById('crypto-sma').value)
+                }
+            };
+            fetch('/api/update_config', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(config) }).then(() => alert("CONFIG SAVED"));
+        }
+        function toggleHold(sym, type) { fetch('/api/toggle_hold', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({symbol:sym, type:type})}).then(updateDashboard); }
+        function manualSell(sym, type, qty) { fetch('/api/sell_manual', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({symbol:sym, type:type, qty:qty})}).then(updateDashboard); }
+        function copyStrategyLog() { fetch('/api/get_strategy_log').then(res=>res.json()).then(d => { navigator.clipboard.writeText(d.log); alert("COPIED TO CLIPBOARD"); }); }
+
+        setInterval(updateDashboard, 5000);
+        updateDashboard();
+    </script>
+</body>
+</html>
