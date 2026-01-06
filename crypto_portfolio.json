@@ -1,0 +1,317 @@
+{
+    "balance": 2127.7572315800317,
+    "positions": {
+        "ETH-USD": {
+            "entry": 3215.56982421875,
+            "current_price": 3200.197265625,
+            "shares": 0.2332401536894689,
+            "stop": 2894.012841796875,
+            "target": 4019.4622802734375,
+            "setup": "BUY (Trend)",
+            "manual_hold": false
+        },
+        "BTC-USD": {
+            "entry": 93626.34375,
+            "current_price": 91645.421875,
+            "shares": 0.00801056593647021,
+            "stop": 84263.709375,
+            "target": 98000.0,
+            "setup": "BUY (Trend)",
+            "manual_hold": false
+        },
+        "XRP-USD": {
+            "entry": 2.396024465560913,
+            "current_price": 2.235529661178589,
+            "shares": 313.0185066054506,
+            "stop": 2.1564220190048218,
+            "target": 2.9950305819511414,
+            "setup": "BUY (Trend)",
+            "manual_hold": false
+        },
+        "RENDER-USD": {
+            "entry": 2.4700560569763184,
+            "current_price": 2.314136266708374,
+            "shares": 337.37425957589244,
+            "stop": 2.24775101184845,
+            "target": 3.0258186697959895,
+            "setup": "USER_FORCE",
+            "manual_hold": true
+        },
+        "FET-USD": {
+            "entry": 0.30783429741859436,
+            "current_price": 0.28537559509277344,
+            "shares": 2707.084104407521,
+            "stop": 0.2801292106509209,
+            "target": 0.37709701433777804,
+            "setup": "USER_FORCE",
+            "manual_hold": true
+        },
+        "DOGE-USD": {
+            "entry": 0.15159514546394348,
+            "current_price": 0.1448262631893158,
+            "shares": 5497.097751929926,
+            "stop": 0.13795158237218857,
+            "target": 0.18570405319333075,
+            "setup": "BUY (Oversold)",
+            "manual_hold": false
+        },
+        "AVAX-USD": {
+            "entry": 14.596675872802734,
+            "current_price": 14.406917572021484,
+            "shares": 57.09062396090072,
+            "stop": 13.282975044250488,
+            "target": 17.880927944183348,
+            "setup": "BUY (Oversold)",
+            "manual_hold": false
+        },
+        "SOL-USD": {
+            "entry": 142.61891174316406,
+            "current_price": 137.07525634765625,
+            "shares": 5.84307735312162,
+            "stop": 129.7832096862793,
+            "target": 174.708166885376,
+            "setup": "BUY (Trend)",
+            "manual_hold": false
+        }
+    },
+    "history": [
+        {
+            "date": "2026-01-05 21:58:11.147991",
+            "type": "BUY",
+            "symbol": "AVAX-USD",
+            "price": 14.319533348083496,
+            "cost": 749.9999999999998,
+            "strategy_snapshot": {
+                "risk_per_trade": 75,
+                "rsi_buy_threshold": 25,
+                "sma_period": 25,
+                "stop_loss_mult": 5.0
+            }
+        },
+        {
+            "date": "2026-01-05 21:58:11.172074",
+            "type": "BUY",
+            "symbol": "DOGE-USD",
+            "price": 0.15170814096927643,
+            "cost": 750.0000000000002,
+            "strategy_snapshot": {
+                "risk_per_trade": 75,
+                "rsi_buy_threshold": 25,
+                "sma_period": 25,
+                "stop_loss_mult": 5.0
+            }
+        },
+        {
+            "date": "2026-01-05 21:58:58.806062",
+            "type": "BUY",
+            "symbol": "ETH-USD",
+            "price": 3215.56982421875,
+            "cost": 749.9999999999998,
+            "strategy_snapshot": {
+                "risk_per_trade": 75,
+                "rsi_buy_threshold": 25,
+                "sma_period": 25,
+                "stop_loss_mult": 5.0
+            }
+        },
+        {
+            "date": "2026-01-05 22:01:59.953052",
+            "type": "BUY",
+            "symbol": "SOL-USD",
+            "price": 137.66693115234375,
+            "cost": 749.9999999999999,
+            "strategy_snapshot": {
+                "risk_per_trade": 75,
+                "rsi_buy_threshold": 25,
+                "sma_period": 25,
+                "stop_loss_mult": 5.0
+            }
+        },
+        {
+            "date": "2026-01-05 22:02:47.671964",
+            "type": "BUY",
+            "symbol": "BTC-USD",
+            "price": 93626.34375,
+            "cost": 750.0000000000005,
+            "strategy_snapshot": {
+                "risk_per_trade": 75,
+                "rsi_buy_threshold": 25,
+                "sma_period": 25,
+                "stop_loss_mult": 5.0
+            }
+        },
+        {
+            "date": "2026-01-05 22:21:46.350015",
+            "type": "BUY",
+            "symbol": "XRP-USD",
+            "price": 2.396024465560913,
+            "cost": 750.0,
+            "strategy_snapshot": {
+                "risk_per_trade": 75,
+                "rsi_buy_threshold": 25,
+                "sma_period": 25,
+                "stop_loss_mult": 5
+            }
+        },
+        {
+            "date": "2026-01-05 22:28:49.018606",
+            "type": "BUY",
+            "symbol": "RENDER-USD",
+            "price": 2.313398838043213,
+            "cost": 750.0000000000008,
+            "strategy_snapshot": {
+                "risk_per_trade": 75,
+                "rsi_buy_threshold": 25,
+                "sma_period": 25,
+                "stop_loss_mult": 5
+            }
+        },
+        {
+            "date": "2026-01-05 22:44:49.133295",
+            "type": "BUY",
+            "symbol": "FET-USD",
+            "price": 0.29481032490730286,
+            "cost": 750.0000000000008,
+            "strategy_snapshot": {
+                "risk_per_trade": 75,
+                "rsi_buy_threshold": 25,
+                "sma_period": 25,
+                "stop_loss_mult": 5
+            }
+        },
+        {
+            "date": "2026-01-06 08:34:00.592998",
+            "type": "SELL",
+            "symbol": "DOGE-USD",
+            "profit": 0.32162975577648467,
+            "reason": "USER_COMMAND",
+            "price": 0.15177319943904877,
+            "shares": 4943.703055143814,
+            "strategy_snapshot": null
+        },
+        {
+            "date": "2026-01-06 08:34:00.667078",
+            "type": "SELL",
+            "symbol": "AVAX-USD",
+            "profit": 18.361093242084962,
+            "reason": "USER_COMMAND",
+            "price": 14.670096397399902,
+            "shares": 52.37600847519089,
+            "strategy_snapshot": null
+        },
+        {
+            "date": "2026-01-06 08:39:44.659751",
+            "type": "BUY",
+            "symbol": "DOGE-USD",
+            "price": 0.15167251229286194,
+            "cost": 833.3333333333344,
+            "strategy_snapshot": {
+                "risk_per_trade": 75,
+                "rsi_buy_threshold": 25,
+                "sma_period": 40,
+                "stop_loss_mult": 4.5
+            }
+        },
+        {
+            "date": "2026-01-06 08:42:55.164639",
+            "type": "BUY",
+            "symbol": "AVAX-USD",
+            "price": 14.646891593933105,
+            "cost": 833.3333333333337,
+            "strategy_snapshot": {
+                "risk_per_trade": 75,
+                "rsi_buy_threshold": 25,
+                "sma_period": 40,
+                "stop_loss_mult": 4.5
+            }
+        },
+        {
+            "date": "2026-01-06 08:57:01.054552",
+            "type": "SELL",
+            "symbol": "DOGE-USD",
+            "profit": -0.4250760830516356,
+            "reason": "USER_COMMAND",
+            "price": 0.15159514546394348,
+            "shares": 5494.293730193279,
+            "strategy_snapshot": null
+        },
+        {
+            "date": "2026-01-06 08:57:01.104848",
+            "type": "SELL",
+            "symbol": "AVAX-USD",
+            "profit": -2.8570180919917902,
+            "reason": "USER_COMMAND",
+            "price": 14.596675872802734,
+            "shares": 56.89489322625348,
+            "strategy_snapshot": null
+        },
+        {
+            "date": "2026-01-06 08:57:02.911219",
+            "type": "BUY",
+            "symbol": "DOGE-USD",
+            "price": 0.15159514546394348,
+            "cost": 833.3333333333338,
+            "strategy_snapshot": {
+                "risk_per_trade": 75,
+                "rsi_buy_threshold": 25,
+                "sma_period": 40,
+                "stop_loss_mult": 4.5
+            }
+        },
+        {
+            "date": "2026-01-06 08:57:02.944167",
+            "type": "BUY",
+            "symbol": "AVAX-USD",
+            "price": 14.596675872802734,
+            "cost": 833.3333333333333,
+            "strategy_snapshot": {
+                "risk_per_trade": 75,
+                "rsi_buy_threshold": 25,
+                "sma_period": 40,
+                "stop_loss_mult": 4.5
+            }
+        },
+        {
+            "date": "2026-01-06 09:24:59.147873",
+            "type": "BUY",
+            "symbol": "FET-USD",
+            "price": 0.30783429741859436,
+            "cost": 833.3333333333339,
+            "reason": "USER_FORCE"
+        },
+        {
+            "date": "2026-01-06 09:24:59.404306",
+            "type": "BUY",
+            "symbol": "RENDER-USD",
+            "price": 2.4700560569763184,
+            "cost": 833.3333333333338,
+            "reason": "USER_FORCE"
+        },
+        {
+            "date": "2026-01-06 10:35:10.338828",
+            "type": "SELL",
+            "symbol": "SOL-USD",
+            "profit": 29.023269423884017,
+            "reason": "MANUAL",
+            "price": 142.99432373046875,
+            "shares": 5.4479314220351265,
+            "strategy_snapshot": null
+        },
+        {
+            "date": "2026-01-06 10:42:01.096758",
+            "type": "BUY",
+            "symbol": "SOL-USD",
+            "price": 142.61891174316406,
+            "cost": 833.333333333333,
+            "strategy_snapshot": {
+                "risk_per_trade": 75,
+                "rsi_buy_threshold": 25,
+                "sma_period": 40,
+                "stop_loss_mult": 4.5
+            }
+        }
+    ],
+    "cooldowns": {
+        "SOL-USD": 1767713710.33887
+    }
+}

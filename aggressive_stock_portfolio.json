@@ -1,0 +1,96 @@
+{
+    "balance": 100.0,
+    "positions": {
+        "OXY": {
+            "entry": 41.95909881591797,
+            "current_price": 41.4900016784668,
+            "shares": 59.58183255955857,
+            "stop": 39.86114387512207,
+            "target": 47.20398616790772,
+            "setup": "BUY (Trend)",
+            "manual_hold": false
+        },
+        "XOM": {
+            "entry": 123.66000366210938,
+            "current_price": 122.95500183105469,
+            "shares": 20.21672267478689,
+            "stop": 117.4770034790039,
+            "target": 139.11750411987308,
+            "setup": "BUY (Oversold)",
+            "manual_hold": false
+        },
+        "AVGO": {
+            "entry": 343.95001220703125,
+            "current_price": 346.9100036621094,
+            "shares": 7.26849807028118,
+            "stop": 326.75251159667965,
+            "target": 386.94376373291027,
+            "setup": "BUY (Trend)",
+            "manual_hold": false
+        },
+        "MPC": {
+            "entry": 172.9949951171875,
+            "current_price": 171.8800048828125,
+            "shares": 13.873233722017465,
+            "stop": 164.34524536132812,
+            "target": 194.61936950683594,
+            "setup": "BUY (Trend)",
+            "manual_hold": false
+        }
+    },
+    "history": [
+        {
+            "date": "2026-01-06 11:13:42.181678",
+            "type": "BUY",
+            "symbol": "OXY",
+            "price": 41.95909881591797,
+            "cost": 2499.999999999997,
+            "strategy_snapshot": {
+                "risk_per_trade": 125,
+                "sma_period": 50,
+                "stop_loss_mult": 2.5,
+                "cooldown_minutes": 60
+            }
+        },
+        {
+            "date": "2026-01-06 11:13:42.187511",
+            "type": "BUY",
+            "symbol": "XOM",
+            "price": 123.66000366210938,
+            "cost": 2499.9999999999964,
+            "strategy_snapshot": {
+                "risk_per_trade": 125,
+                "sma_period": 50,
+                "stop_loss_mult": 2.5,
+                "cooldown_minutes": 60
+            }
+        },
+        {
+            "date": "2026-01-06 11:13:42.193187",
+            "type": "BUY",
+            "symbol": "AVGO",
+            "price": 343.95001220703125,
+            "cost": 2499.999999999995,
+            "strategy_snapshot": {
+                "risk_per_trade": 125,
+                "sma_period": 50,
+                "stop_loss_mult": 2.5,
+                "cooldown_minutes": 60
+            }
+        },
+        {
+            "date": "2026-01-06 11:13:42.196294",
+            "type": "BUY",
+            "symbol": "MPC",
+            "price": 172.9949951171875,
+            "cost": 2400.0000000000123,
+            "strategy_snapshot": {
+                "risk_per_trade": 125,
+                "sma_period": 50,
+                "stop_loss_mult": 2.5,
+                "cooldown_minutes": 60
+            }
+        }
+    ],
+    "cooldowns": {}
+}

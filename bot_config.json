@@ -1,0 +1,57 @@
+{
+    "balance": 10000,
+    "crypto_strategy": {
+        "risk_per_trade": 75,
+        "rsi_buy_threshold": 25,
+        "sma_period": 40,
+        "stop_loss_mult": 4.5
+    },
+    "crypto_symbols": [
+        "ETH-USD",
+        "SOL-USD",
+        "BTC-USD",
+        "RENDER-USD",
+        "FET-USD",
+        "XRP-USD"
+    ],
+    "history": [],
+    "news_keywords": [
+        "Venezuela",
+        "Maduro",
+        "Oil",
+        "Chevron",
+        "Bitcoin",
+        "Crypto"
+    ],
+    "positions": {},
+    "stock_strategy": {
+        "risk_per_trade": 125,
+        "sma_period": 50,
+        "stop_loss_mult": 2.5,
+        "cooldown_minutes": 60
+    },
+    "stock_symbols": [
+        "NVDA",
+        "TSLA",
+        "AMD",
+        "SLB",
+        "CVX",
+        "EPD",
+        "HAL",
+        "AVGO",
+        "OXY",
+        "VLO",
+        "GEV",
+        "AEIS",
+        "PBR",
+        "INTC",
+        "MPC",
+        "XOM"
+    ],
+    "strategy": {
+        "risk_per_trade": 250,
+        "sma_period": 50,
+        "stop_loss_mult": 3.1,
+        "take_profit_mult": 2
+    }
+}
